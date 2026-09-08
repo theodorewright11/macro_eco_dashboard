@@ -1,0 +1,9 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MacroDashboard from '../components/macro/MacroDashboard';
+import manifest from '../../public/data/fred/manifest.json';
+---
+
+<Layout title="Macro Dashboard" description="The moving parts of the U.S. macro economy on one page, from FRED.">
+  <MacroDashboard client:load label="Macro Dashboard" manifest={manifest.series} fetchedAt={manifest.fetchedAt} />
+</Layout>
