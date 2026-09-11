@@ -82,7 +82,47 @@ export default function MacroDashboard({ label = 'Macro Dashboard', manifest, fe
       { key: 'baa', series: [S('BAA10Y')], yFormat: AXIS.pt, caption: 'Baa corporate spread over 10-year Treasury' },
       { key: 'walcl', series: [S('WALCL_T')], yFormat: AXIS.trillions, caption: 'Fed balance sheet, total assets' },
     ];
-    return { policy, curve, labor, inflation, conditions };
+    const recession: PanelSpec[] = [
+      {
+        key: 'sahm',
+        series: [S('SAHM')],
+        yFormat: AXIS.pt,
+        includeZero: true,
+        refLines: [{ v: 0.5, label: '0.50 = triggered', dashed: true }],
+        caption: 'Sahm rule: unemployment\u2019s 3-month average, above its low of the past year',
+        flex: 3,
+      },
+      {
+        key: 'recprob',
+        series: [S('RECPROB')],
+        yFormat: AXIS.pct,
+        includeZero: true,
+        caption: 'Smoothed probability the economy was in recession that month',
+        flex: 2,
+      },
+    ];
+    const housing: PanelSpec[] = [
+      { key: 'starts', series: [S('PERMIT'), S('HOUST')], yFormat: AXIS.units, caption: 'Permits and starts, annualized units' },
+      { key: 'price', series: [S('HPI_YOY')], yFormat: AXIS.pct, includeZero: true, caption: 'Home prices vs a year earlier, Case-Shiller national' },
+    ];
+    const production: PanelSpec[] = [
+      {
+        key: 'durables',
+        series: [S('DURABLES_YOY')],
+        yFormat: AXIS.pct,
+        includeZero: true,
+        caption: 'Durable goods orders ex-transport, vs a year earlier',
+        flex: 3,
+      },
+      {
+        key: 'vehicles',
+        series: [S('TOTALSA')],
+        yFormat: AXIS.millions,
+        caption: 'Total vehicle sales, annualized',
+        flex: 2,
+      },
+    ];
+    return { policy, curve, labor, inflation, conditions, recession, housing, production };
   }, [data]);
 
   // The payroll note only earns its line when a bar in the window is actually cut.
@@ -183,6 +223,25 @@ export default function MacroDashboard({ label = 'Macro Dashboard', manifest, fe
           className="min-h-[360px]"
         />
         <ChartCard
+          title="Is a recession starting?"
+          subtitle="Two independent readings. The Sahm rule watches only unemployment and triggers at 0.50. The smoothed probability comes from a model of payrolls, production, income and sales. When both move together, that is the signal worth taking seriously."
+          panels={charts?.recession ?? []}
+          start={start}
+          end={end}
+          recessions={recessions}
+          note="Both are coincident, not leading: they tell you a recession has likely begun, not that one is coming."
+          className="min-h-[360px]"
+        />
+        <ChartCard
+          title="Are people buying big things?"
+          subtitle="Durable goods orders are what businesses commit to; vehicle sales are what households commit to. Both are purchases that can wait, so both sag before the wider economy does."
+          panels={charts?.production ?? []}
+          start={start}
+          end={end}
+          recessions={recessions}
+          className="min-h-[360px]"
+        />
+        <ChartCard
           title="How tight are financial conditions?"
           subtitle="What borrowing actually costs, the premium investors demand to hold corporate risk, and the size of the Fed's balance sheet."
           panels={charts?.conditions ?? []}
@@ -190,6 +249,17 @@ export default function MacroDashboard({ label = 'Macro Dashboard', manifest, fe
           start={start}
           end={end}
           recessions={recessions}
+          className="lg:col-span-2 min-h-[280px]"
+        />
+        <ChartCard
+          title="What is housing doing?"
+          subtitle="Permits are pulled before ground is broken, so they lead starts by a month or two. Prices are Case-Shiller: repeat sales of the same houses, so the line tracks the market rather than the mix of what happened to sell."
+          panels={charts?.housing ?? []}
+          layout="row"
+          start={start}
+          end={end}
+          recessions={recessions}
+          legend={[...legendOf(['PERMIT', 'HOUST'])]}
           className="lg:col-span-2 min-h-[280px]"
         />
       </div>

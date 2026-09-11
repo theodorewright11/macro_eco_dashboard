@@ -35,6 +35,19 @@ export function trillions(v: number, dp = 2): string {
   return `$${fixed(v, dp)}T`;
 }
 
+/** Thousands of units: "1.35M", "780k". Housing starts and permits. */
+export function units(v: number, dp = 2): string {
+  const a = Math.abs(v);
+  const sign = v < 0 ? MINUS : '';
+  if (a >= 1000) return `${sign}${(a / 1000).toFixed(dp)}M`;
+  return `${sign}${Math.round(a)}k`;
+}
+
+/** A value already in millions of units: "16.2M". Vehicle sales. */
+export function millions(v: number, dp = 1): string {
+  return `${fixed(v, dp)}M`;
+}
+
 export function dateLabel(t: number, freq: Freq): string {
   const d = new Date(t);
   const y = d.getUTCFullYear();

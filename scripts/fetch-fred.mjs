@@ -36,6 +36,13 @@ const SERIES = [
   'BAA10Y',
   'WALCL',
   'USREC',
+  'SAHMREALTIME',
+  'RECPROUSM156N',
+  'PERMIT',
+  'HOUST',
+  'CSUSHPINSA',
+  'ADXTNO',
+  'TOTALSA',
 ];
 
 // Used only when the series page cannot be parsed.
@@ -54,6 +61,13 @@ const FALLBACK = {
   BAA10Y: { name: "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity", units: 'Percent', frequency: 'Daily', source: 'Federal Reserve Bank of St. Louis', release: '' },
   WALCL: { name: 'Assets: Total Assets: Total Assets (Less Eliminations from Consolidation): Wednesday Level', units: 'Millions of U.S. Dollars', frequency: 'Weekly, As of Wednesday', source: 'Board of Governors of the Federal Reserve System (US)', release: 'H.4.1 Factors Affecting Reserve Balances' },
   USREC: { name: 'NBER based Recession Indicators for the United States from the Period following the Peak through the Trough', units: '+1 or 0', frequency: 'Monthly', source: 'Federal Reserve Bank of St. Louis', release: 'Recession Indicators Series' },
+  SAHMREALTIME: { name: 'Real-time Sahm Rule Recession Indicator', units: 'Percentage Points', frequency: 'Monthly', source: 'Sahm, Claudia', release: 'Sahm Rule Recession Indicator' },
+  RECPROUSM156N: { name: 'Smoothed U.S. Recession Probabilities', units: 'Percent', frequency: 'Monthly', source: 'Chauvet, Marcelle', release: 'U.S. Recession Probabilities' },
+  PERMIT: { name: 'New Privately-Owned Housing Units Authorized in Permit-Issuing Places: Total Units', units: 'Thousands of Units', frequency: 'Monthly', source: 'U.S. Census Bureau', release: 'New Residential Construction' },
+  HOUST: { name: 'New Privately-Owned Housing Units Started: Total Units', units: 'Thousands of Units', frequency: 'Monthly', source: 'U.S. Census Bureau', release: 'New Residential Construction' },
+  CSUSHPINSA: { name: 'S&P Cotality Case-Shiller U.S. National Home Price Index', units: 'Index Jan 2000=100', frequency: 'Monthly', source: 'S&P Dow Jones Indices LLC', release: 'S&P Cotality Case-Shiller Home Price Indices' },
+  ADXTNO: { name: "Manufacturers' New Orders: Durable Goods Excluding Transportation", units: 'Millions of Dollars', frequency: 'Monthly', source: 'U.S. Census Bureau', release: "Manufacturer's Shipments, Inventories, and Orders (M3) Survey" },
+  TOTALSA: { name: 'Total Vehicle Sales', units: 'Millions of Units', frequency: 'Monthly', source: 'U.S. Bureau of Economic Analysis', release: 'Supplemental Estimates, Motor Vehicles' },
 };
 
 const csvUrl = id => `https://fred.stlouisfed.org/graph/fredgraph.csv?id=${id}`;

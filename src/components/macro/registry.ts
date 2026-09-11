@@ -3,14 +3,17 @@
 // data file can't know: colours, formats and the plain-language framing.
 
 import type { Freq } from './compute';
-import { fixed, jobs, pct, signedPt, trillions } from './format';
+import { fixed, jobs, millions, pct, signedPt, trillions, units } from './format';
 
 /** Keys of the series the charts draw, raw and derived. */
 export type Key =
   | 'FEDFUNDS' | 'DGS2' | 'DGS10' | 'T10Y2Y'
   | 'CPI_YOY' | 'CORECPI_YOY' | 'COREPCE_YOY' | 'REAL_RATE'
   | 'UNRATE' | 'PAYROLL_CHG' | 'GDP'
-  | 'MORTGAGE30US' | 'BAA10Y' | 'WALCL_T';
+  | 'MORTGAGE30US' | 'BAA10Y' | 'WALCL_T'
+  | 'SAHM' | 'RECPROB'
+  | 'PERMIT' | 'HOUST' | 'HPI_YOY'
+  | 'DURABLES_YOY' | 'TOTALSA';
 
 /**
  * One colour per series, everywhere it appears. Families carry meaning:
@@ -34,6 +37,13 @@ export const COLOR: Record<Key, string> = {
   MORTGAGE30US: '#0369A1',
   BAA10Y: '#C2410C',
   WALCL_T: '#64748B',
+  SAHM: '#111827',
+  RECPROB: '#B42318',
+  PERMIT: '#0891B2',
+  HOUST: '#155E75',
+  HPI_YOY: '#9A3412',
+  DURABLES_YOY: '#4338CA',
+  TOTALSA: '#B45309',
 };
 
 /** Neutral grey behind every time series: NBER recession months. */
@@ -60,6 +70,13 @@ export const NAME: Record<Key, string> = {
   MORTGAGE30US: '30-year mortgage rate',
   BAA10Y: 'Baa spread',
   WALCL_T: 'Fed balance sheet',
+  SAHM: 'Sahm rule',
+  RECPROB: 'Recession probability',
+  PERMIT: 'Building permits',
+  HOUST: 'Housing starts',
+  HPI_YOY: 'Home prices, Case-Shiller',
+  DURABLES_YOY: 'Durable goods orders',
+  TOTALSA: 'Vehicle sales',
 };
 
 /** Rates read as percents; spreads and the real rate read as percentage points. */
@@ -78,6 +95,13 @@ export const FORMAT: Record<Key, (v: number) => string> = {
   MORTGAGE30US: v => pct(v, 2),
   BAA10Y: v => `${fixed(v, 2)} pt`,
   WALCL_T: v => trillions(v, 2),
+  SAHM: v => `${fixed(v, 2)} pt`,
+  RECPROB: v => pct(v, 1),
+  PERMIT: v => units(v),
+  HOUST: v => units(v),
+  HPI_YOY: v => pct(v, 1),
+  DURABLES_YOY: v => pct(v, 1),
+  TOTALSA: v => millions(v),
 };
 
 /** Axis tick formats: fewer decimals, no sign noise. */
@@ -86,6 +110,8 @@ export const AXIS = {
   pt: (v: number) => (v === 0 ? '0' : `${v} pt`),
   jobs: (v: number) => jobs(v, false),
   trillions: (v: number) => trillions(v, Number.isInteger(v) ? 0 : 1),
+  units: (v: number) => units(v, 1),
+  millions: (v: number) => millions(v, 0),
 };
 
 export interface TileSpec {
@@ -129,6 +155,13 @@ export const USED_AS: Record<string, string> = {
   BAA10Y: 'Credit spread, as published (Baa corporate yield − 10-year Treasury)',
   WALCL: 'Fed balance sheet, rescaled from millions to trillions of dollars',
   USREC: 'Recession shading on every chart (NBER peak-to-trough months)',
+  SAHMREALTIME: 'Sahm rule, as published. The real-time variant: it uses the unemployment rate as it was known each month, not as later revised, so the line shows what the signal actually said at the time.',
+  RECPROUSM156N: 'Smoothed recession probability, as published (Chauvet–Piger model of payrolls, industrial production, real income and manufacturing sales)',
+  PERMIT: 'Building permits, as published (seasonally adjusted annual rate)',
+  HOUST: 'Housing starts, as published (seasonally adjusted annual rate)',
+  CSUSHPINSA: 'Home-price growth = % change vs the same month a year earlier, from the Case-Shiller national index. Repeat sales of the same houses, so it is not distorted by the mix of what happens to sell. Index level itself (Jan 2000 = 100) is not shown. © S&P Dow Jones Indices LLC; reprinted with permission.',
+  ADXTNO: 'Durable goods orders excluding transportation = % change vs the same month a year earlier, from the published dollar level. Transportation is excluded because a single aircraft order swings the headline.',
+  TOTALSA: 'Total vehicle sales, as published (seasonally adjusted annual rate, millions of units)',
 };
 
 export const RANGES: { label: string; years: number | null }[] = [

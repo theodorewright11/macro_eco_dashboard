@@ -74,6 +74,13 @@ export function derive(b: Bundle): MacroData {
     MORTGAGE30US: raw('MORTGAGE30US'),
     BAA10Y: raw('BAA10Y'),
     WALCL_T: scale(raw('WALCL'), 1e-6),
+    SAHM: raw('SAHMREALTIME'),
+    RECPROB: raw('RECPROUSM156N'),
+    PERMIT: raw('PERMIT'),
+    HOUST: raw('HOUST'),
+    HPI_YOY: yoy(raw('CSUSHPINSA')),
+    DURABLES_YOY: yoy(raw('ADXTNO')),
+    TOTALSA: raw('TOTALSA'),
   };
 
   const freq: Record<Key, Freq> = {
@@ -91,6 +98,13 @@ export function derive(b: Bundle): MacroData {
     MORTGAGE30US: freqOf('MORTGAGE30US'),
     BAA10Y: freqOf('BAA10Y'),
     WALCL_T: freqOf('WALCL'),
+    SAHM: freqOf('SAHMREALTIME'),
+    RECPROB: freqOf('RECPROUSM156N'),
+    PERMIT: freqOf('PERMIT'),
+    HOUST: freqOf('HOUST'),
+    HPI_YOY: 'monthly',
+    DURABLES_YOY: 'monthly',
+    TOTALSA: freqOf('TOTALSA'),
   };
 
   let dataEnd = 0;
